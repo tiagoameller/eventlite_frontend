@@ -1,4 +1,5 @@
 import React from "react"
+import AppHeader from "./components/AppHeader"
 import Eventlite from "./components/Eventlite"
 import Login from "./components/Login"
 
@@ -11,6 +12,7 @@ const currentUser = () => {
 function App() {
   return (
     <div className="App">
+      <AppHeader />
       {currentUser() ? <Eventlite /> : <Login />}
     </div>
   );
