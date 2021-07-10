@@ -6,7 +6,7 @@ const handleSignOut = (e) => {
   e.preventDefault()
   axios({
     method: "DELETE",
-    url: "http://localhost:3001/auth/sign_out",
+    url: "https://tiago-eventlite.herokuapp.com/auth/sign_out",
     data: JSON.parse(localStorage.user)
   })
   .then(() => {

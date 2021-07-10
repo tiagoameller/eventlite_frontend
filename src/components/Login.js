@@ -1,12 +1,21 @@
 import React from "react"
 import axios from "axios"
+import FormErrors from "./FormErrors"
 
 class Login extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      formErrors: {}
+    }
+    this.logo = React.createRef()
+  }
+
   handleLogin = (e) => {
     e.preventDefault()
     axios({
       method: "POST",
-      url: "http://localhost:3001/auth/sign_in",
+      url: "https://tiago-eventlite.herokuapp.com/auth/sign_in",
       data: {
         email: this.email.value,
         password: this.password.value
@@ -24,12 +33,17 @@ class Login extends React.Component {
       )
       window.location = "/"
     })
+    .catch(error => {
+      console.log(error.response.data)
+      this.setState({formErrors: error.response.data.errors})
+    })
   }
 
   render () {
     return (
       <div>
         <h2>Log in</h2>
+        <FormErrors formErrors = {this.state.formErrors} />
         <form onSubmit={this.handleLogin}>
           <input name="email" ref={(input) => {this.email = input}} />
           <input name="password" ref={(input) => {this.password = input}} />

@@ -4,13 +4,19 @@ const FormErrors = (props) =>
   <div>
     <ul>
       {Object.keys(props.formErrors).map((formErrorField) => {
-        return (
-          props.formErrors[formErrorField].map((error) => {
-            return (
-              <li key={formErrorField}>{formErrorField} {error}</li>
-            )
-          })
-        )
+        if(Array.isArray(props.formErrors[formErrorField])) {
+          return (
+            props.formErrors[formErrorField].map((error) => {
+              return (
+                <li key={formErrorField}>{formErrorField} {error}</li>
+              )
+            })
+          )
+        } else {
+          return (
+            <li key={0}>{props.formErrors[formErrorField]}</li>
+          )
+        }
       })}
     </ul>
   </div>

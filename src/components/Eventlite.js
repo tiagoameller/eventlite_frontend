@@ -26,7 +26,7 @@ class Eventlite extends React.Component {
   componentDidMount () {
     axios({
       method: "GET",
-      url: "http://localhost:3001/api/v1/events"
+      url: "https://tiago-eventlite.herokuapp.com/api/v1/events"
     })
     .then(response => {
       this.setState({events: response.data})
@@ -65,7 +65,7 @@ class Eventlite extends React.Component {
     }
     axios({
       method: "POST",
-      url: "http://localhost:3001/api/v1/events",
+      url: "https://tiago-eventlite.herokuapp.com/api/v1/events",
       headers: JSON.parse(localStorage.user),
       data: { event: newEvent }
     })
