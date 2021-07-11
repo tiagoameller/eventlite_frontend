@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react"
 import axios from "axios"
+import { Link } from "react-router-dom"
 
 const handleSignOut = (e) => {
   e.preventDefault()
@@ -19,13 +20,21 @@ function AppHeader() {
   const currentUser = localStorage.getItem("user")
   return (
     <div>
-      {currentUser &&
-        <div style={{float: "right"}}>
-          {JSON.parse(currentUser).uid}
-          <a href="#" onClick={handleSignOut}>Sign out</a>
-        </div>
-      }
-      <h1 className="logo">Eventlite</h1>
+      <div style={{float: "right"}}>
+        {currentUser ?
+          <>
+            {JSON.parse(currentUser).uid}
+            <a href="#" onClick={handleSignOut}>Sign out</a>
+          </> :
+          <>
+            <Link to="/signup">Signup</Link>
+            <Link to="/login" style={{padding: "10px"}}>Login</Link>
+          </>
+        }
+      </div>
+      <Link to="/" style={{textDecoration: "none", color: "black"}}>
+        <h1 className="logo">Eventlite</h1>
+      </Link>
     </div>
   )
 }
