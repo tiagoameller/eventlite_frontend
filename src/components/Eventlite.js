@@ -134,18 +134,22 @@ class Eventlite extends React.Component {
   }
 
   render () {
+    const currentUser = localStorage.getItem("user")
     return(
       <div>
         <FormErrors formErrors = {this.state.formErrors} />
-        <EventForm
-          handleInput = {this.handleInput}
-          handleSubmit = {this.handleSubmit}
-          formValid = {this.state.formValid}
-          title = {this.state.title.value}
-          start_datetime = {this.state.start_datetime.value}
-          location = {this.state.location.value}
-        />
-        <EventsList events={this.state.events} />
+        {
+          currentUser &&
+            <EventForm
+              handleInput = {this.handleInput}
+              handleSubmit = {this.handleSubmit}
+              formValid = {this.state.formValid}
+              title = {this.state.title.value}
+              start_datetime = {this.state.start_datetime.value}
+              location = {this.state.location.value}
+            />
+          }
+          <EventsList events={this.state.events} />
       </div>
     )
   }
