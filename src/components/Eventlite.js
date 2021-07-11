@@ -117,7 +117,6 @@ class Eventlite extends React.Component {
 
   afterCreateEvent = () => {
     this.clearFields()
-    this.changeLogoColour()
   }
 
   clearFields () {
@@ -126,11 +125,6 @@ class Eventlite extends React.Component {
       start_datetime: {value: "", valid: false},
       location: {value: "", valid: false}
     })
-  }
-
-  changeLogoColour () {
-    const colors = ["red", "blue", "green", "yellow"]
-    this.logo.current.style.color = colors[Math.floor(Math.random() * colors.length)]
   }
 
   render () {
