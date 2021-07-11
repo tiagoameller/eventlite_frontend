@@ -2,32 +2,44 @@ import React from "react"
 import axios from "axios"
 import FormErrors from "./FormErrors"
 
-class Signup extends React.Component {
+// Used both for sign in and sign up
+// pass prop: kind = ("signin" | "signup")
+class Auth extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
       formErrors: {}
     }
     this.logo = React.createRef()
+    if(this.props.kind === "signin") {
+      this.url = "https://tiago-eventlite.herokuapp.com/auth/sign_in"
+      this.title = "Log in"
+    } else {
+      this.url = "https://tiago-eventlite.herokuapp.com/auth"
+      this.title = "Sign up"
+    }
   }
 
-  handleSignup = (e) => {
+  handleAuth = (e) => {
     e.preventDefault()
     axios({
       method: "POST",
-      url: "https://tiago-eventlite.herokuapp.com/auth",
+      url: this.url,
       data: {
         email: this.email.value,
         password: this.password.value
       }
     })
     .then(response => {
-      localStorage.setItem("user",
+      console.log(response)
+      localStorage.setItem(
+        "user",
         JSON.stringify({
           "access-token": response.headers["access-token"],
           "client": response.headers["client"],
           "uid": response.data.data.uid
-      }))
+        })
+      )
       window.location = "/"
     })
     .catch(error => {
@@ -39,16 +51,16 @@ class Signup extends React.Component {
   render () {
     return (
       <div>
-        <h2>Sign up</h2>
+        <h2>{this.title}</h2>
         <FormErrors formErrors = {this.state.formErrors} />
-        <form onSubmit={this.handleSignup} >
-          <input name="email" ref={(input) => this.email = input } />
-          <input name="password" type="password" ref={(input) => this.password = input } />
-          <input type="submit"/>
+        <form onSubmit={this.handleAuth}>
+          <input name="email" ref={(input) => {this.email = input}} />
+          <input name="password" ref={(input) => {this.password = input}} />
+          <input type="submit" value="Log in" />
         </form>
       </div>
     )
   }
 }
 
-export default Signup
+export default Auth
