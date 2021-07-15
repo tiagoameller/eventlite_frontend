@@ -107,6 +107,18 @@ class EventForm extends React.Component {
     this.setState({formErrors: {}})
   }
 
+  deleteEvent = () => {
+    if(window.confirm("Are you sure?")) {
+      axios({
+        method: "DELETE",
+        url: `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}`,
+        headers: JSON.parse(localStorage.getItem("user"))
+      }).then((response) => {
+        this.props.history.push("/")
+      })
+    }
+  }
+
   render() {
     return (
       <div>
@@ -119,6 +131,11 @@ class EventForm extends React.Component {
           <input type="submit" value={(this.state.editing ? "Edit" : "Create") + " Event"}
            disabled={!this.state.formValid} />
         </form>
+        { this.state.editing &&
+          <p>
+            <button onClick={this.deleteEvent}>Delete Event</button>
+          </p>
+        }
       </div>
     )
   }
