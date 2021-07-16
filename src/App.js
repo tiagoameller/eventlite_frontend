@@ -23,7 +23,7 @@ function App() {
         {currentUser ? <Redirect to="/" /> : <Auth kind="signup" />}
       </Route>
       <Route exact path="/events/:id" render={routeProps => (
-        <Event {...routeProps} />
+        <Event />
       )}>
       </Route>
       <Route exact path="/events/:id/edit" render={routeProps => (
