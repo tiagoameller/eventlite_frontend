@@ -12,10 +12,12 @@ class Auth extends React.Component {
     }
     this.logo = React.createRef()
     if(this.props.kind === "signin") {
+      // this.url = "http://localhost:3001/auth/sign_in"
       this.url = "https://tiago-eventlite.herokuapp.com/auth/sign_in"
       this.title = "Log in"
     } else {
       this.url = "https://tiago-eventlite.herokuapp.com/auth"
+      // this.url = "http://localhost:3001/auth"
       this.title = "Sign up"
     }
   }

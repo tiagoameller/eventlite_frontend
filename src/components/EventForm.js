@@ -24,6 +24,7 @@ class EventForm extends React.Component {
     if(this.props.match) {
       axios({
         method: 'GET',
+        // url: `http://localhost:3001/api/v1/events/${this.props.match.params.id}`,
         url: `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}`,
         headers: JSON.parse(localStorage.getItem("user"))
       }).then((response) => {
@@ -65,6 +66,7 @@ class EventForm extends React.Component {
     let event = { title: this.state.title.value, start_datetime: this.state.start_datetime.value, location: this.state.location.value }
     const method = this.state.editing ? "PUT" : "POST"
     const url = this.state.editing ? `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}` : "https://tiago-eventlite.herokuapp.com/api/v1/events"
+    // const url = this.state.editing ? `http://localhost:3001/api/v1/events/${this.props.match.params.id}` : "http://localhost:3001/api/v1/events"
     axios({
       method: method,
       url: url,
@@ -111,6 +113,7 @@ class EventForm extends React.Component {
     if(window.confirm("Are you sure?")) {
       axios({
         method: "DELETE",
+        // url: `http://localhost:3001/api/v1/events/${this.props.match.params.id}`,
         url: `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}`,
         headers: JSON.parse(localStorage.getItem("user"))
       }).then((response) => {

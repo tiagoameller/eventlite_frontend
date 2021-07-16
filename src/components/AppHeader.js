@@ -8,6 +8,7 @@ const handleSignOut = (e) => {
   axios({
     method: "DELETE",
     url: "https://tiago-eventlite.herokuapp.com/auth/sign_out",
+    // url: "http://localhost:3001/auth/sign_out",
     data: JSON.parse(localStorage.user)
   })
   .then(() => {
