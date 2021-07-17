@@ -1,24 +1,22 @@
-import React from "react"
+import React from 'react'
+import PropTypes from 'prop-types'
+import Alert from 'react-bootstrap/Alert'
 
 const FormErrors = (props) =>
   <div>
-    <ul>
-      {Object.keys(props.formErrors).map((formErrorField) => {
-        if(Array.isArray(props.formErrors[formErrorField])) {
+    {Object.keys(props.formErrors).map((formErrorField) => {
+      return (
+        props.formErrors[formErrorField].map((error) => {
           return (
-            props.formErrors[formErrorField].map((error) => {
-              return (
-                <li key={formErrorField}>{formErrorField} {error}</li>
-              )
-            })
+            <Alert variant="danger">{formErrorField} {error}</Alert>
           )
-        } else {
-          return (
-            <li key={0}>{props.formErrors[formErrorField]}</li>
-          )
-        }
-      })}
-    </ul>
+        })
+      )
+    })}
   </div>
+
+FormErrors.propTypes = {
+  formErrors: PropTypes.object
+}
 
 export default FormErrors

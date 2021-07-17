@@ -1,14 +1,15 @@
 const validations = {
-  checkMinLength: (text, minLength) => {
-    if (text.length >= minLength) {
+  checkMinLength: function(text, minLength) {
+    if(text.length >= minLength) {
       return [true, ""]
-    } else if (minLength === 1) {
+    } else if(minLength === 1) {
       return [false, "can't be blank"]
     } else {
       return [false, `length should be at least ${minLength} characters`]
     }
   },
-  timeShouldBeInTheFuture: (time) => {
+
+  timeShouldBeInTheFuture: function (time) {
     if(Date.parse(time) > Date.now()) {
       return [true, ""]
     } else {

@@ -1,47 +1,27 @@
-import React from "react"
-import FormErrors from "./FormErrors"
-import PropTypes from "prop-types"
-import validations from "../validations"
-import axios from "axios"
-import { Link } from "react-router-dom"
-
-import Container from "react-bootstrap/Container"
-import Form from "react-bootstrap/Form"
-import Button from "react-bootstrap/Button"
+import React from 'react'
+import PropTypes from 'prop-types'
+import FormErrors from './FormErrors'
+import validations from '../validations'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button';
 
 class EventForm extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
-      title: {value: "", valid: false},
-      start_datetime: {value: "", valid: false},
-      location: {value: "", valid: false},
+      title: {value: '', valid: false},
+      start_datetime: {value: '', valid: false},
+      location: {value: '', valid: false},
+      image_url: {value: '', valid: false},
+      description: {value: '', valid: false},
       formErrors: {},
       formValid: false,
       editing: false
     }
   }
-
-  componentDidMount () {
-    if(this.props.match) {
-      this.setState({editing: this.props.match.path === '/events/:id/edit'})
-    }
-    if(this.props.match) {
-      axios({
-        method: 'GET',
-        // url: `http://localhost:3001/api/v1/events/${this.props.match.params.id}`,
-        url: `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}`,
-        headers: JSON.parse(localStorage.getItem("user"))
-      }).then((response) => {
-        this.setState({
-          title: {valid: true, value: response.data.title},
-          location: {valid: true, value: response.data.location},
-          start_datetime: {valid: true, value: new Date(response.data.start_datetime).toDateString()},
-        }, this.validateForm)
-      })
-    }
-  }
-
 
   static formValidations = {
     title: [
@@ -53,7 +33,28 @@ class EventForm extends React.Component {
     ],
     location: [
       (value) => { return(validations.checkMinLength(value, 1)) }
-    ]
+    ],
+    image_url: [],
+    description: []
+  }
+
+  componentDidMount () {
+    if(this.props.match) {
+      this.setState({editing: this.props.match.path === '/events/:id/edit'})
+      axios({
+        method: "GET",
+        url: `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}`,
+        headers: JSON.parse(localStorage.getItem('user'))
+      }).then((response) => {
+        this.setState({
+          title: {valid: true, value: response.data.title},
+          location: {valid: true, value: response.data.location},
+          start_datetime: {valid: true, value: new Date(response.data.start_datetime).toDateString()},
+          image_url: {valid: true, value: response.data.image_url},
+          description: {valid: true, value: response.data.description},
+        }, this.validateForm)
+      });
+    }
   }
 
   handleInput = e => {
@@ -68,10 +69,16 @@ class EventForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault()
 
-    let event = { title: this.state.title.value, start_datetime: this.state.start_datetime.value, location: this.state.location.value }
-    const method = this.state.editing ? "PUT" : "POST"
-    const url = this.state.editing ? `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}` : "https://tiago-eventlite.herokuapp.com/api/v1/events"
-    // const url = this.state.editing ? `http://localhost:3001/api/v1/events/${this.props.match.params.id}` : "http://localhost:3001/api/v1/events"
+    const event = {
+      title: this.state.title.value,
+      start_datetime: this.state.start_datetime.value,
+      location: this.state.location.value,
+      image_url: this.state.image_url.value,
+      description: this.state.description.value,
+    }
+    const method = this.state.editing ? 'PUT' : 'POST'
+    const url = this.state.editing ? `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}` : 'https://tiago-eventlite.herokuapp.com/api/v1/events'
+
     axios({
       method: method,
       url: url,
@@ -80,16 +87,16 @@ class EventForm extends React.Component {
     })
     .then(response => {
       if(!this.state.editing && this.props.onSuccess) {
-        this.addNewEvent(response.data)
+        this.props.onSuccess(response.data)
       }
       this.resetFormErrors();
     })
     .catch(error => {
-      this.setState({formErrors: error.response.data})
+      this.setState({formErrors: error.response.data, formValid: false})
     })
   }
 
-  validateField (fieldName, fieldValue, fieldValidations) {
+  validateField(fieldName, fieldValue, fieldValidations) {
     let fieldValid = true
     let errors = fieldValidations.reduce((errors, validation) => {
       let [valid, fieldError] = validation(fieldValue)
@@ -106,7 +113,7 @@ class EventForm extends React.Component {
     this.setState(newState, this.validateForm)
   }
 
-  validateForm () {
+  validateForm() {
     this.setState({formValid: this.state.title.valid && this.state.location.valid && this.state.start_datetime.valid})
   }
 
@@ -115,14 +122,13 @@ class EventForm extends React.Component {
   }
 
   deleteEvent = () => {
-    if(window.confirm("Are you sure?")) {
+    if(window.confirm("Are you sure you want to delete this event?")) {
       axios({
-        method: "DELETE",
-        // url: `http://localhost:3001/api/v1/events/${this.props.match.params.id}`,
+        method: 'DELETE',
         url: `https://tiago-eventlite.herokuapp.com/api/v1/events/${this.props.match.params.id}`,
-        headers: JSON.parse(localStorage.getItem("user"))
+        headers: JSON.parse(localStorage.getItem('user'))
       }).then((response) => {
-        this.props.history.push("/")
+        this.props.history.push('/')
       })
     }
   }
@@ -215,7 +221,7 @@ class EventForm extends React.Component {
 }
 
 EventForm.propTypes = {
-  onSuccess: PropTypes.func
+  onSuccess: PropTypes.func,
 }
 
 export default EventForm

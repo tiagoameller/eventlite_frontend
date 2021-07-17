@@ -1,25 +1,23 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react"
-import axios from "axios"
-import Navbar from "react-bootstrap/Navbar"
-import Nav from "react-bootstrap/Nav"
+import React from 'react'
+import axios from 'axios'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
 
-const handleSignOut = (e) => {
-  e.preventDefault()
+const handleSignOut = function(e) {
+  e.preventDefault();
   axios({
-    method: "DELETE",
-    url: "https://tiago-eventlite.herokuapp.com/auth/sign_out",
-    // url: "http://localhost:3001/auth/sign_out",
+    method: 'DELETE',
+    url: 'https://tiago-eventlite.herokuapp.com/auth/sign_out',
     data: JSON.parse(localStorage.user)
   })
   .then(() => {
-    localStorage.removeItem("user")
-    window.location = "/"
+    localStorage.removeItem('user')
+    window.location = '/'
   })
 }
 
 function AppHeader() {
-  const currentUser = localStorage.getItem("user")
+  const currentUser = localStorage.getItem('user')
   return (
     <Navbar fixed="top" bg="white">
       <Navbar.Brand href="/">eventlite</Navbar.Brand>

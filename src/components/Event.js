@@ -1,23 +1,21 @@
-import axios from "axios"
-import React, { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { useParams } from "react-router-dom"
-import moment from "moment"
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { Link, useParams } from 'react-router-dom'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import moment from 'moment'
 
-import Container from "react-bootstrap/Container"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
-import Button from "react-bootstrap/Button"
-
-function Event(props) {
+function Event(props){
   const [event, setEvent] = useState({})
   let { id } = useParams()
+
   useEffect(() => {
     axios({
       method: "GET",
       url: `https://tiago-eventlite.herokuapp.com/api/v1/events/${id}`,
-      // url: `http://localhost:3001/api/v1/events/${id}`,
-      headers: JSON.parse(localStorage.getItem("user"))
+      headers: JSON.parse(localStorage.getItem('user'))
     }).then((response) => {
       setEvent(response.data)
     })
@@ -39,8 +37,8 @@ function Event(props) {
                     Edit
                   </Button>
                 }
-                <p className="text-uppercase event-date-abbreviated">{moment(event.start_datetime).format("MMM")}</p>
-                <p className="event-date-abbreviated">{moment(event.start_datetime).format("DD")}</p>
+                <p className="text-uppercase event-date-abbreviated">{moment(event.start_datetime).format('MMM')}</p>
+                <p className="event-date-abbreviated">{moment(event.start_datetime).format('DD')}</p>
                 <h1 className="pt-4 h5">{event.title}</h1>
                 {event.user &&
                   <div className="pb-3 text-muted">by {event.user.name}</div>
@@ -74,8 +72,8 @@ function Event(props) {
               <div className="p-4">
                 <h3 className="h6">Date and Time</h3>
                 <div className="event-details__data">
-                  <p>{moment(event.start_datetime).format("ddd, DD MMMM YYYY")}</p>
-                  <p>{moment(event.start_datetime).format("hh:mm a")}</p>
+                  <p>{moment(event.start_datetime).format('ddd, DD MMMM YYYY')}</p>
+                  <p>{moment(event.start_datetime).format('hh:mm a')}</p>
                   <p><Link to="#">Add to Calendar</Link></p>
                 </div>
                 <h3 className="h6">Location</h3>
@@ -88,5 +86,4 @@ function Event(props) {
     </div>
   )
 }
-
 export default Event

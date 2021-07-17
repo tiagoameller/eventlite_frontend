@@ -1,13 +1,12 @@
-import React from "react"
-import axios from "axios"
-import EventsList from "./EventsList"
-import EventForm from "./EventForm"
-
-import "./Eventlite.css"
-import Container from "react-bootstrap/Container"
+import React from 'react'
+import axios from 'axios'
+import EventsList from './EventsList'
+import EventForm from './EventForm'
+import './Eventlite.css'
+import Container from 'react-bootstrap/Container'
 
 class Eventlite extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       events: []
@@ -37,7 +36,7 @@ class Eventlite extends React.Component {
     return (
       <Container className="pt-5">
         {currentUser &&
-          <div className="mb-5 pt-3 event-form-homepage-container">
+          <div className="mb-5 event-form-homepage-container">
             <EventForm onSuccess={this.addNewEvent} />
           </div>
         }
