@@ -3,6 +3,11 @@ import FormErrors from "./FormErrors"
 import PropTypes from "prop-types"
 import validations from "../validations"
 import axios from "axios"
+import { Link } from "react-router-dom"
+
+import Container from "react-bootstrap/Container"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
 
 class EventForm extends React.Component {
   constructor (props) {
@@ -124,22 +129,87 @@ class EventForm extends React.Component {
 
   render() {
     return (
-      <div>
-        <h4>{this.state.editing ? "Edit Event" : "Create an Event"}</h4>
-        <FormErrors formErrors = {this.state.formErrors} />
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" name="title" placeholder="Title" value={this.state.title.value} onChange={this.handleInput} />
-          <input type="text" name="start_datetime" placeholder="Date" value={this.state.start_datetime.value} onChange={this.handleInput} />
-          <input type="text" name="location" placeholder="Location" value={this.state.location.value} onChange={this.handleInput} />
-          <input type="submit" value={(this.state.editing ? "Edit" : "Create") + " Event"}
-           disabled={!this.state.formValid} />
-        </form>
-        { this.state.editing &&
-          <p>
-            <button onClick={this.deleteEvent}>Delete Event</button>
-          </p>
-        }
-      </div>
+      <Container className="event-form-container">
+        <div className={!this.state.editing && "card"}>
+          <h4>{this.state.editing ? "Edit Event" : "Create a new Event"}</h4>
+          {this.state.editing &&
+          <a href={`/events/${this.props.match.params.id}`} className="float-right">
+            View Event
+          </a>
+          }
+          <FormErrors formErrors = {this.state.formErrors} />
+          <Form
+            inline={!this.state.editing}
+            onSubmit={this.handleSubmit}>
+            <Form.Label htmlFor="title" srOnly>
+              Title
+            </Form.Label>
+            <Form.Control
+              className="mb-2 mr-sm-2"
+              id="title"
+              name="title"
+              placeholder="Title"
+              value={this.state.title.value}
+              onChange={this.handleInput}
+            />
+            <Form.Label htmlFor="start_datetime" srOnly>
+              Start date
+            </Form.Label>
+            <Form.Control
+              className="mb-2 mr-sm-2"
+              id="start_datetime"
+              name="start_datetime"
+              placeholder="Start Date"
+              value={this.state.start_datetime.value}
+              onChange={this.handleInput}
+            />
+            <Form.Label htmlFor="location" srOnly>
+              Location
+            </Form.Label>
+            <Form.Control
+              className="mb-2 mr-sm-2"
+              id="location"
+              name="location"
+              placeholder="Location"
+              value={this.state.location.value}
+              onChange={this.handleInput}
+            />
+            {this.state.editing &&
+            <>
+            <Form.Label htmlFor="image_url" srOnly>
+              Image URL
+            </Form.Label>
+            <Form.Control
+              className="mb-2 mr-sm-2"
+              id="image_url"
+              name="image_url"
+              placeholder="Image URL"
+              value={this.state.image_url.value}
+              onChange={this.handleInput}
+            />
+            <Form.Label htmlFor="description" srOnly>
+              Description
+            </Form.Label>
+            <Form.Control
+              as="textarea" rows="3"
+              className="mb-2 mr-sm-2"
+              id="description"
+              name="description"
+              placeholder="Description"
+              value={this.state.description.value}
+              onChange={this.handleInput}
+            />
+            </>
+            }
+            <Button variant="danger" type="submit" className="mb-2  mr-sm-2 " disabled={!this.state.formValid} >
+              {this.state.editing ? "Update Event" : "Create Event"}
+            </Button>
+            {this.state.editing &&
+             <Link href="#" className="float-right text-muted mb-2 mr-sm-2" onClick={this.deleteEvent}>Delete Event</Link>
+            }
+          </Form>
+        </div>
+      </Container>
     )
   }
 }
